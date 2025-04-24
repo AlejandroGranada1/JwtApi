@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Socket.IO Test</title>
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-</head>
-<body>
-  <h1>Cliente Socket.IO</h1>
-  <input id="messageInput" type="text" placeholder="Escribe un mensaje">
-  <button onclick="sendMessage()">Enviar</button>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Socket.IO Test</title>
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    </head>
+    <body>
+        <h1>Cliente Socket.IO</h1>
+        <input id="messageInput" type="text" placeholder="Escribe un mensaje" />
+        <button onclick="sendMessage()">Enviar</button>
 
-  <ul id="messages"></ul>
+        <ul id="messages"></ul>
 
-  <script>
-    // Cambia esto por tu dominio si está en producción
-    const socket = io('https://jwtapi-xp0m.onrender.com');
+        <script>
+            // Cambia esto por tu dominio si está en producción
+            const socket = io('https://jwtapi-xp0m.onrender.com');
 
-    socket.on('connect', () => {
-      document.write('🟢 Conectado con ID:', socket.id);
-    });
+            socket.on('connect', () => {
+                console.log('🟢 Conectado con ID:', socket.id);
+            });
 
-    socket.on('receiveMessage', (msg) => {
-      const li = document.createElement('li');
-      li.textContent = msg;
-      document.getElementById('messages').appendChild(li);
-    });
+            socket.on('receiveMessage', (msg) => {
+                const li = document.createElement('li');
+                li.textContent = msg;
+                document.getElementById('messages').appendChild(li);
+            });
 
-    function sendMessage() {
-      const input = document.getElementById('messageInput');
-      const msg = input.value;
-      socket.emit('sendMessage', msg);
-      input.value = '';
-    }
-  </script>
-</body>
+            function sendMessage() {
+                const input = document.getElementById('messageInput');
+                const msg = input.value;
+                socket.emit('sendMessage', msg);
+                input.value = '';
+            }
+        </script>
+    </body>
 </html>
