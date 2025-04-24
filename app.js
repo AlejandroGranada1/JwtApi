@@ -12,6 +12,7 @@ const io = socketio(server, {
 });
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 
 // Rutas
@@ -40,5 +41,5 @@ io.on('connection', (socket) => {
 
 // Servidor corriendo
 server.listen(process.env.PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${process.env.PORT}`);
-});
+  console.log(`Servidor corriendo en https://jwtapi-xp0m.onrender.com`);
+})
