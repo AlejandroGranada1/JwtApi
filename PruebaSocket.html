@@ -10,6 +10,16 @@
         <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md">
             <h1 class="text-2xl font-bold text-center text-indigo-600 mb-6">💬 Cliente Socket.IO</h1>
 
+            <!-- Campo de nombre -->
+            <div class="mb-4">
+                <input
+                    id="nameInput"
+                    type="text"
+                    placeholder="Ingresa tu nombre"
+                    class="w-full border border-indigo-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+            </div>
+
+            <!-- Campo de mensaje -->
             <div class="flex items-center gap-2 mb-4">
                 <input
                     id="messageInput"
@@ -35,20 +45,23 @@
                 console.log('🟢 Conectado con ID:', socket.id);
             });
 
-            socket.on('receiveMessage', (msg) => {
+            socket.on('receiveMessage', ({ name, text }) => {
                 const li = document.createElement('li');
-                li.textContent = msg;
-                li.className = 'bg-indigo-100 p-2 rounded-xl';
+                li.innerHTML = `<span class="font-semibold text-indigo-600">${name}</span><br><span>${text}</span>`;
+                li.className = 'bg-indigo-100 px-4 py-2 rounded-xl shadow';
                 document.getElementById('messages').appendChild(li);
             });
 
             function sendMessage() {
-                const input = document.getElementById('messageInput');
-                const msg = input.value.trim();
-                if (msg !== '') {
-                    socket.emit('sendMessage', msg);
-                    input.value = '';
-                }
+                const nameInput = document.getElementById('nameInput');
+                const messageInput = document.getElementById('messageInput');
+                const name = nameInput.value.trim();
+                const text = messageInput.value.trim();
+
+                if (name === '' || text === '') return;
+
+                socket.emit('sendMessage', { name, text });
+                messageInput.value = '';
             }
         </script>
     </body>

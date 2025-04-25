@@ -1,11 +1,11 @@
 require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
-const http = require('http');           // <--- Agregado
-const socketio = require('socket.io');  // <--- Agregado
+const http = require('http');
+const socketio = require('socket.io');
 
 const app = express();
-const server = http.createServer(app);  // <--- En vez de app.listen
+const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: '*',
@@ -25,7 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 
-// Socket.IO en acción 🎯
+// Socket.IO
 io.on('connection', (socket) => {
   console.log('🟢 Cliente conectado:', socket.id);
 
@@ -33,14 +33,16 @@ io.on('connection', (socket) => {
     console.log('🔴 Cliente desconectado:', socket.id);
   });
 
-  // Puedes agregar eventos aquí, por ejemplo:
   socket.on('sendMessage', (msg) => {
-    console.log('Mensaje recibido:', msg);
-    io.emit('receiveMessage', msg); // lo reenvías a todos
+    const name = msg?.name || 'Anónimo';
+    const text = msg?.text || '';
+    console.log('Mensaje recibido:', { name, text });
+
+    io.emit('receiveMessage', { name, text });
   });
 });
 
-// Servidor corriendo
+// Servidor
 server.listen(process.env.PORT, () => {
   console.log(`Servidor corriendo en https://jwtapi-xp0m.onrender.com`);
-})
+});
